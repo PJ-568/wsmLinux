@@ -30,20 +30,20 @@ on:
 
 jobs:
 
-  test-init:
-    runs-on: ubuntu-latest
+  # test-init:
+  #   runs-on: ubuntu-latest
 
-    # steps:
-    #   - uses: actions/checkout@v3
-    #   - name: 初始化文件
-    #     shell: bash
-    #     run: |
-    #       # 创建 temp
-    #       mkdir /home/runner/temp
-    #       # 复制仓库文件到 temp
-    #       cp -v -r ./* /home/runner/temp
-    #       # 检查
-    #       ls -R /home/runner/temp
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: 初始化文件
+  #       shell: bash
+  #       run: |
+  #         # 创建 temp
+  #         mkdir /home/runner/temp
+  #         # 复制仓库文件到 temp
+  #         cp -v -r ./* /home/runner/temp
+  #         # 检查
+  #         ls -R /home/runner/temp
 
   guard_clause:
     # needs: test-init
