@@ -19,7 +19,6 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
-
     <link rel="shortcut icon" href="icon.svg">
     <link rel="stylesheet" href="xterm/xterm.css" />
     <link rel="stylesheet" href="scrollbar.css" />
@@ -27,43 +26,35 @@
     <script src="xterm/xterm.js"></script>
     <script src="xterm/xterm-addon-fit.js"></script>
     <script src="network.js"></script>
-    <script defer data-domain="webvm.io" src="https://plausible.leaningtech.com/js/script.js"></script>
+    <script defer src="https://plausible.leaningtech.com/js/script.js"></script>
 </head>
 
-<body
-    style="margin:0;height:100%;background:black;color:#E0E0E0;overflow:hidden;display:flex;flex-direction:column; justify-content:space-between;height:100%;">
+<body style="margin:0;height:100%;background:black;color:#E0E0E0;overflow:hidden;display:flex;flex-direction:column; justify-content:space-between;height:100%;">
     <div>
         <div style="padding-top: 0.7rem;padding-bottom: 0.7rem;font-size: 0.3rem; font-weight: 200;vertical-align:center;height: 5rem;">
             <div style="margin-left: 20px; height: 100%; display: flex; align-items: center; justify-content: space-between;">
-                <pre style="font-family: monospace; font-weight: 600; font-size: large; color: #ad7fa8;">
+                <pre style="font-weight: 600; font-size: large; color: #ad7fa8;">
 __      __   _  __   ____  __
 \ \    / /__| |_\ \ / /  \/  |
  \ \/\/ / -_) '_ \ V /| |\/| |
   \_/\_/\___|_.__/\_/ |_|  |_|
                 </pre>
                 <div style="height:100%;display: flex; flex-direction: column;justify-content: space-between;">
-                    <div
-                        style="padding-top: 0.7rem;font-size: 0.3rem; font-weight: 200;vertical-align:center;height:50px;">
-                        <div
-                            style="margin-right: 10px; margin-left: 20px; height: 100%; display: flex; align-items: center; justify-content: flex-end;gap: 50px;">
-                            <div
-                                style="color: white; font-family: montserrat; font-weight: 400; font-size: large; height: 100%; display: flex; align-items: center;">
+                    <div style="padding-top: 0.7rem;font-size: 0.3rem; font-weight: 200;vertical-align:center;height:50px;">
+                        <div style="margin-right: 10px; margin-left: 20px; height: 100%; display: flex; align-items: center; justify-content: flex-end;gap: 50px;">
+                            <div style="color: #E0E0E0; font-family: montserrat; font-weight: 400; font-size: large; height: 100%; display: flex; align-items: center;">
                                 <span>处理器：</span>
                                 <span id="cpuactivity" style="margin-left: 7px;">空载</span>
                             </div>
-                            <div
-                                style="color: white; font-family: montserrat; font-weight: 400; font-size: large; height: 100%; display: flex; align-items: center;">
+                            <div style="color: #E0E0E0; font-family: montserrat; font-weight: 400; font-size: large; height: 100%; display: flex; align-items: center;">
                                 <span>存储：</span>
                                 <span id="hddactivity" style="margin-left: 7px;">空载</span>
                             </div>
                             <a id="loginLink" style="user-select: text ;text-decoration: none; height: 100%;">
-                                <div
-                                    style="color: white; font-family: montserrat; font-weight: 400; font-size: large; height: 100%; display: flex; align-items: center;">
+                                <div style="color: #E0E0E0; font-family: montserrat; font-weight: 400; font-size: large; height: 100%; display: flex; align-items: center;">
                                     <div style="position: relative;">
                                         <span style="cursor: pointer" id="networkStatus">连接到服务器</span>
-                                        <span
-                                            style="cursor: pointer; position: absolute; right: 0px; visibility: hidden;"
-                                            id="ipCopied">已复制。</span>
+                                        <span style="cursor: pointer; position: absolute; right: 0px; visibility: hidden;" id="ipCopied">已复制。</span>
                                     </div>
                                     <!-- <img src="assets/tailscale.svg" height="35px" style="margin-left: 7px;"> -->
                                 </div>
@@ -74,12 +65,11 @@ __      __   _  __   ____  __
             </div>
         </div>
     </div>
-    <div style="flex-grow:0; flex-shrink: 0; height:1px; width: 100%; background-color: white;">
+    <div style="flex-grow:0; flex-shrink: 0; height:1px; width: 100%; background-color: #E0E0E0;">
     </div>
     <main style="display: flex; flex-direction: row; justify-content: space-between; margin: 5px; height: 100%;">
         <div style="flex-grow:1; height:100%;display:inline-block;margin:0;" class="scrollbar" id="console">
         </div>
-
     </main>
     <script>
 
@@ -108,7 +98,7 @@ __      __   _  __   ____  __
                     "|                                          |",
                     "+------------------------------------------+",
                     "",
-                    "您好，运行以下指令以查看部分可执行指令：",
+                    "运行以下指令以查看部分可执行指令：",
                     "",
                     "  cat /home/pj568/runable.md",
                     "",
@@ -174,7 +164,7 @@ __      __   _  __   ____  __
         var consoleDiv = document.getElementById("console");
 
         //xterm.js related logic
-        var term = new Terminal({ cursorBlink: true, convertEol: true, fontFamily: "monospace", fontWeight: 400, fontWeightBold: 700 });
+        var term = new Terminal({ cursorBlink: true, convertEol: true, fontWeight: 400, fontWeightBold: 700 });
         var fitAddon = new FitAddon.FitAddon();
         term.loadAddon(fitAddon);
         term.open(consoleDiv);
@@ -205,8 +195,8 @@ __      __   _  __   ____  __
             // Reasonable defaults for local deployments
             // var cmd = "/bin/bash";
             // var args = ["--login"];
-            // var env = ["HOME=/home/user", "TERM=xterm", "USER=user", "SHELL=/bin/bash", "EDITOR=vim", "LANG=en_US.UTF-8", "LC_ALL=C"];
-            // var cwd = "/home/user";
+            // var env = ["HOME=/home/pj568", "TERM=xterm", "USER=pj568", "SHELL=/bin/bash", "EDITOR=nano", "LANG=zh_CN.UTF-8", "LC_ALL=C"];
+            // var cwd = "/home/pj568";
             const structure = {
                 cmd: cmd,
                 args: args,
