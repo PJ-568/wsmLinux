@@ -25,7 +25,7 @@ cp webvm/serviceWorker.js wsmLinux/serviceWorker.js
 
 ```shell
 git add -A
-git commit -am "更改"
+git commit -am "[更改类型] 更改项"
 git push
 ```
 
