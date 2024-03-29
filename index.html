@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="cn" style="height:100%;">
+<html lang="cn">
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=1100, initial-scale=1.0">
-    <title>PJ568 后端服务器终端</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PJ568 后端服务器</title>
 
     <meta name="description" content="PJ568 后端服务器访问页面。">
     <meta name="keywords" content="SSH, Linux, WebAssembly">
-    <meta property="og:title" content="PJ568 后端服务器终端" />
+    <meta property="og:title" content="PJ568 后端服务器" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="PJ568 服务器" />
 
-    <!-- Apple iOS web clip compatibility tags -->
     <meta name="application-name" content="PJ568 服务器" />
     <meta name="apple-mobile-web-app-title" content="PJ568 服务器" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -27,45 +26,92 @@
     <script src="xterm/xterm-addon-fit.js"></script>
     <script src="network.js"></script>
     <script defer src="https://plausible.leaningtech.com/js/script.js"></script>
+    <style>
+        ::selection {
+            background-color: white;
+            color: initial;
+        }
+
+        .top-container {
+            align-items: center;
+            box-sizing: border-box;
+            display: flex;
+            gap: 1rem;
+            height: 100%;
+            justify-content: space-between;
+            margin: 0 auto;
+            overflow: auto;
+            padding: .3rem;
+            white-space: nowrap;
+            width: 100%;
+        }
+
+        .top-container .item {
+            align-items: center;
+            border: .1rem solid black;
+            border-radius: .5rem;
+            box-sizing: border-box;
+            display: flex;
+            flex: 0 0 auto;
+            gap: .5rem;
+            height: 100%;
+            padding: .5rem;
+            text-align: center;
+        }
+
+        .top-container a:hover {
+            cursor: pointer
+        }
+
+        .top-container .item img, .top-container .item svg {
+            height: 100%;
+        }
+
+        .top-container .占据 {
+            flex: 1 1 auto;
+        }
+
+        .top-container .元素:hover {
+            border: .1rem solid #9E9E9E;
+        }
+
+        @media (max-width: 680px) {
+            .超隐 {
+                display: none;
+            }
+        }
+    </style>
 </head>
 
 <body style="margin:0;height:100%;background:black;color:#E0E0E0;overflow:hidden;display:flex;flex-direction:column; justify-content:space-between;height:100%;">
     <div>
-        <div style="padding-top: 0.7rem;padding-bottom: 0.7rem;font-size: 0.3rem; font-weight: 200;vertical-align:center;height: 5rem;">
-            <div style="margin-left: 20px; height: 100%; display: flex; align-items: center; justify-content: space-between;">
-                <pre style="font-weight: 600; font-size: large; color: #ad7fa8;">
-__      __   _  __   ____  __
-\ \    / /__| |_\ \ / /  \/  |
- \ \/\/ / -_) '_ \ V /| |\/| |
-  \_/\_/\___|_.__/\_/ |_|  |_|
-                </pre>
-                <div style="height:100%;display: flex; flex-direction: column;justify-content: space-between;">
-                    <div style="padding-top: 0.7rem;font-size: 0.3rem; font-weight: 200;vertical-align:center;height:50px;">
-                        <div style="margin-right: 10px; margin-left: 20px; height: 100%; display: flex; align-items: center; justify-content: flex-end;gap: 50px;">
-                            <div style="color: #E0E0E0; font-family: montserrat; font-weight: 400; font-size: large; height: 100%; display: flex; align-items: center;">
-                                <span>处理器：</span>
-                                <span id="cpuactivity" style="margin-left: 7px;">空载</span>
-                            </div>
-                            <div style="color: #E0E0E0; font-family: montserrat; font-weight: 400; font-size: large; height: 100%; display: flex; align-items: center;">
-                                <span>存储：</span>
-                                <span id="hddactivity" style="margin-left: 7px;">空载</span>
-                            </div>
-                            <a id="loginLink" style="user-select: text ;text-decoration: none; height: 100%;">
-                                <div style="color: #E0E0E0; font-family: montserrat; font-weight: 400; font-size: large; height: 100%; display: flex; align-items: center;">
-                                    <div style="position: relative;">
-                                        <span style="cursor: pointer" id="networkStatus">连接到服务器</span>
-                                        <span style="cursor: pointer; position: absolute; right: 0px; visibility: hidden;" id="ipCopied">已复制。</span>
-                                    </div>
-                                    <!-- <img src="assets/tailscale.svg" height="35px" style="margin-left: 7px;"> -->
-                                </div>
-                            </a>
+        <div style="padding: .5rem; font-size: .3rem; font-weight: 200; vertical-align: center; height: 4rem;">
+            <div class="top-container">
+                <div class="item 元素 占据">
+                    <img src="icon.svg" />
+                    <span class="超隐" style="width: 100%; font-family: montserrat; font-weight: 400; font-size: large; margin-left: 7px;">PJ568 后端服务器</span>
+                </div>
+                <div class="item 元素">
+                    <svg id="cpusvg" style="fill:#E0E0E0;width:1.5rem;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M176 24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64c-35.3 0-64 28.7-64 64H24c-13.3 0-24 10.7-24 24s10.7 24 24 24H64v56H24c-13.3 0-24 10.7-24 24s10.7 24 24 24H64v56H24c-13.3 0-24 10.7-24 24s10.7 24 24 24H64c0 35.3 28.7 64 64 64v40c0 13.3 10.7 24 24 24s24-10.7 24-24V448h56v40c0 13.3 10.7 24 24 24s24-10.7 24-24V448h56v40c0 13.3 10.7 24 24 24s24-10.7 24-24V448c35.3 0 64-28.7 64-64h40c13.3 0 24-10.7 24-24s-10.7-24-24-24H448V280h40c13.3 0 24-10.7 24-24s-10.7-24-24-24H448V176h40c13.3 0 24-10.7 24-24s-10.7-24-24-24H448c0-35.3-28.7-64-64-64V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H280V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H176V24zM160 128H352c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32zm192 32H160V352H352V160z"/></svg>
+                    <span class="超隐" style="font-family: montserrat; font-weight: 400; font-size: large; margin-left: 7px;" id="cpuactivity">空载</span>
+                </div>
+                <div class="item 元素">
+                    <svg id="hddsvg" style="fill:#E0E0E0;width:1.5rem;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M64 64C28.7 64 0 92.7 0 128v7.4c0 6.8 4.4 12.6 10.1 16.3C23.3 160.3 32 175.1 32 192s-8.7 31.7-21.9 40.3C4.4 236 0 241.8 0 248.6V320H576V248.6c0-6.8-4.4-12.6-10.1-16.3C552.7 223.7 544 208.9 544 192s8.7-31.7 21.9-40.3c5.7-3.7 10.1-9.5 10.1-16.3V128c0-35.3-28.7-64-64-64H64zM576 352H0v64c0 17.7 14.3 32 32 32H80V416c0-8.8 7.2-16 16-16s16 7.2 16 16v32h96V416c0-8.8 7.2-16 16-16s16 7.2 16 16v32h96V416c0-8.8 7.2-16 16-16s16 7.2 16 16v32h96V416c0-8.8 7.2-16 16-16s16 7.2 16 16v32h48c17.7 0 32-14.3 32-32V352zM192 160v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V160c0-17.7 14.3-32 32-32s32 14.3 32 32zm128 0v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V160c0-17.7 14.3-32 32-32s32 14.3 32 32zm128 0v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V160c0-17.7 14.3-32 32-32s32 14.3 32 32z"/></svg>
+                    <span class="超隐" style="font-family: montserrat; font-weight: 400; font-size: large; margin-left: 7px;" id="hddactivity">空载</span>
+                </div>
+                <a class="item 元素" id="loginLink" style="user-select: text ;text-decoration: none; height: 100%;">
+                    <div style="font-family: montserrat; font-weight: 400; font-size: large; height: 100%; display: flex; align-items: center;">
+                        <div style="position: relative;">
+                            <svg style="fill:#E0E0E0;width:1.5rem;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M256 64H384v64H256V64zM240 0c-26.5 0-48 21.5-48 48v96c0 26.5 21.5 48 48 48h48v32H32c-17.7 0-32 14.3-32 32s14.3 32 32 32h96v32H80c-26.5 0-48 21.5-48 48v96c0 26.5 21.5 48 48 48H240c26.5 0 48-21.5 48-48V368c0-26.5-21.5-48-48-48H192V288H448v32H400c-26.5 0-48 21.5-48 48v96c0 26.5 21.5 48 48 48H560c26.5 0 48-21.5 48-48V368c0-26.5-21.5-48-48-48H512V288h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H352V192h48c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48H240zM96 448V384H224v64H96zm320-64H544v64H416V384z"/></svg>
+                            <span style="cursor: pointer" id="networkStatus">连接服务器至本地</span>
+                            <span style="cursor: pointer; position: absolute; right: 0; visibility: hidden;" id="ipCopied">已复制。</span>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
-    <div style="flex-grow:0; flex-shrink: 0; height:1px; width: 100%; background-color: #E0E0E0;">
+    <div style="flex-grow:0; flex-shrink: 0; height:1px; width: 100%; background-color: #9E9E9E;">
     </div>
     <main style="display: flex; flex-direction: row; justify-content: space-between; margin: 5px; height: 100%;">
         <div style="flex-grow:1; height:100%;display:inline-block;margin:0;" class="scrollbar" id="console">
@@ -92,13 +138,19 @@ __      __   _  __   ____  __
             },
             getAsciiText: function () {
                 var text = [
+                    "Debian GNU/Linux 10 debian-mod tty0",
+                    "",
+                    "debian-mod login: pj568",
+                    "Password:",
+                    "",
+                    "",
                     "+------------------------------------------+",
                     "|                                          |",
                     "|           PJ568 后端服务器终端           |",
                     "|                                          |",
                     "+------------------------------------------+",
                     "",
-                    "运行以下指令以查看部分可执行指令：",
+                    "欢迎回来，运行以下指令以查看部分指令：",
                     "",
                     "  cat /home/pj568/runable.md",
                     "",
@@ -241,17 +293,30 @@ __      __   _  __   ____  __
             }
             function devCallback(state) {
                 var h = document.getElementById("hddactivity");
-                if (state == "ready")
-                    h.textContent = "负载";
-                else
+                var i = document.getElementById("hddsvg");
+                if (state == "ready") {
                     h.textContent = "空载";
+                    h.style.color = "#E0E0E0"
+                    i.style.fill = '#E0E0E0';
+                } else {
+                    h.textContent = "负载";
+                    h.style.color = "orange"
+                    i.style.fill = 'orange';
+                }
+                    
             }
             function cpuCallback(state) {
                 var h = document.getElementById("cpuactivity");
-                if (state == "ready")
-                    h.textContent = "负载";
-                else
+                var i = document.getElementById("cpusvg");
+                if (state == "ready") {
                     h.textContent = "空载";
+                    h.style.color = "#E0E0E0"
+                    i.style.fill = '#E0E0E0';
+                } else {
+                    h.textContent = "负载";
+                    h.style.color = "orange"
+                    i.style.fill = 'orange';
+                }
             }
             // The device url and type are replaced by Github Actions.
             CheerpXApp.create({ devices: [{ type: DEVICE_TYPE, url: IMAGE_URL, name: "block1" }], mounts: [{ type: "ext2", dev: "block1", path: "/" }, { type: "cheerpOS", dev: "/app", path: "/app" }, { type: "cheerpOS", dev: "/str", path: "/data" }, { type: "devs", dev: "", path: "/dev" }], networkInterface: networkInterface, activityInterface: { cpu: cpuCallback, dev: devCallback } }).then(runTest, failCallback);
