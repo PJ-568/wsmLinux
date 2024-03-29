@@ -1,0 +1,35 @@
+# 继承系统基本信息
+FROM --platform=i386 i386/debian:buster
+ARG DEBIAN_FRONTEND=noninteractive
+
+# 使用包管理器安装软件
+RUN apt-get clean && apt-get update && apt-get -y upgrade
+RUN apt-get -y install apt-utils gcc \
+	python3 nano unzip tar rustc cargo  \
+	fakeroot dbus base whiptail hexedit \
+	nodejs patch ucf manpages less \
+	file make dialog curl wget p7zip \
+	git netcat-openbsd nethack-console
+RUN apt-get autoclean && apt-get autoclean
+
+# 手动安装部分软件
+# RUN wget https://github.com/directvt/vtm/releases/latest/download/vtm_linux_x86.zip && unzip vtm_linux_x86.zip && tar -xvf vtm_linux_x86.tar
+# RUN cp vtm /usr/bin/vtm
+# RUN rm vtm_linux_x86.zip vtm_linux_x86.tar
+
+# 初始化用户
+RUN useradd -m pj568 && echo "pj568:password" | chpasswd
+
+# 以用户名义复制配置文件
+COPY --chown=user:pj568 ./cp_to_home /home/pj568
+# COPY --chown=user:pj568 ./examples /home/pj568/examples
+# RUN chmod -R +x  /home/pj568/examples/lua
+
+# [可选](可在终端设置) 设置工作目录
+WORKDIR /home/pj568/
+
+# [可选](可在终端设置) 设置环境变量
+ENV HOME="/home/pj568" TERM="xterm" USER="pj568" SHELL="/bin/bash" EDITOR="nano" LANG="zh_CN.UTF-8" LC_ALL="C"
+
+RUN echo 'root:password' | chpasswd
+CMD [ "/bin/bash" ]

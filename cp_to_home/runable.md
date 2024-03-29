@@ -1,0 +1,30 @@
+# 可运行的指令
+
+## 编辑器
+
+nano
+hexedit
+
+## 工具
+
+unzip
+tar
+7z
+
+## 生产环境
+
+git
+rustc
+cargo
+nodejs
+python3
+
+## 网络环境
+
+curl
+wget
+netcat-openbsd
+
+## 娱乐
+
+nethack-console
