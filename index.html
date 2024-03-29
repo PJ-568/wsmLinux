@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="cn" style="height:100%;">
-<meta property="og:image" content="https://webvm.io/assets/reddit.png" />
 
 <head>
     <meta charset="utf-8">
@@ -61,28 +60,12 @@ __      __   _  __   ____  __
                                 <div
                                     style="color: white; font-family: montserrat; font-weight: 400; font-size: large; height: 100%; display: flex; align-items: center;">
                                     <div style="position: relative;">
-                                        <span style="cursor: pointer" id="networkStatus">Connect via Tailscale </span>
+                                        <span style="cursor: pointer" id="networkStatus">连接到服务器</span>
                                         <span
                                             style="cursor: pointer; position: absolute; right: 0px; visibility: hidden;"
-                                            id="ipCopied">Copied! </span>
+                                            id="ipCopied">已复制。</span>
                                     </div>
-                                    <img src="assets/tailscale.svg" height="35px" style="margin-left: 7px;">
-                                </div>
-                            </a>
-                            <a href="https://discord.gg/yTNZgySKGa" style="text-decoration: none; height: 100%;"
-                                target="_blank">
-                                <div
-                                    style="color: white; font-family: montserrat; font-weight: 400; font-size: large; height: 100%; display: flex; align-items: center;">
-                                    <span>Join Discord </span>
-                                    <img src="assets/discord-mark-blue.svg" height="35px" style="margin-left: 7px;">
-                                </div>
-                            </a>
-                            <a href="https://github.com/leaningtech/webvm/issues"
-                                style="text-decoration: none; height: 100%;" target="_blank">
-                                <div
-                                    style="color: white; font-family: montserrat; font-weight: 400; font-size: large; height: 100%; display: flex; align-items: center;">
-                                    <span>GitHub Issues </span>
-                                    <img src="assets/github-mark-white.svg" height="35px" style="margin-left: 5px;">
+                                    <!-- <img src="assets/tailscale.svg" height="35px" style="margin-left: 7px;"> -->
                                 </div>
                             </a>
                         </div>
@@ -108,60 +91,46 @@ __      __   _  __   ____  __
         var printOnTerm = {
             getAsciiTitle: function () {
                 var title = [
-                    color + "                        __      __   _  __   ____  __       " + normal,
-                    color + "                        \\ \\    / /__| |_\\ \\ / /  \\/  | " + normal,
-                    color + "                         \\ \\/\\/ / -_) '_ \\ V /| |\\/| | " + normal,
-                    color + "                          \\_/\\_/\\___|_.__/\\_/ |_|  |_|  " + normal,
+                    color + "+------------------------------------------+" + normal,
+                    color + "|                                          |" + normal,
+                    color + "|           PJ568 后端服务器终端           |" + normal,
+                    color + "|                                          |" + normal,
+                    color + "+------------------------------------------+" + normal,
 
                 ];
                 return title;
             },
             getAsciiText: function () {
                 var text = [
-                    "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+",
-                    "|                                                                             |",
-                    "| WebVM is a server-less virtual Linux environment running fully client-side  |",
-                    "| in HTML5/WebAssembly.                                                       |",
-                    "|                                                                             |",
-                    "| WebVM is powered by the CheerpX virtualization engine, which enables safe,  |",
-                    "| sandboxed client-side execution of x86 binaries on any browser.             |",
-                    "|                                                                             |",
-                    "| CheerpX includes an x86-to-WebAssembly JIT compiler, a virtual block-based  |",
-                    "| file system, and a Linux syscall emulator.                                  |",
-                    "|                                                                             |",
-                    "| [NEW!] Your own WebVM with custom images via Dockerfile:                    |",
-                    "|                                                                             |",
-                    "| " + underline + "https://leaningtech.com/mini-webvm-your-linux-box-from-dockerfile-via-wasm" + normal + "  |",
-                    "|                                                                             |",
-                    "+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+",
+                    "+------------------------------------------+",
+                    "|                                          |",
+                    "|           PJ568 后端服务器终端           |",
+                    "|                                          |",
+                    "+------------------------------------------+",
                     "",
-                    "   Welcome to WebVM. If unsure, try these examples:",
+                    "您好，运行以下指令以查看部分可执行指令：",
                     "",
-                    "     python3 examples/python3/fibonacci.py ",
-                    "     gcc -o helloworld examples/c/helloworld.c && ./helloworld",
-                    "     objdump -d ./helloworld | less -M",
-                    "     vim examples/c/helloworld.c",
-                    "     curl --max-time 15 parrot.live  # requires networking",
+                    "  cat /home/pj568/runable.md",
                     "",
                 ];
                 return text;
             },
             getSharedArrayBufferMissingMessage: function () {
-                const isCustom = window.location.hostname !== "webvm.io";
+                const isCustom = window.location.hostname !== "dsh.pj568.eu.oeg";
                 const isSecureContext = window.isSecureContext;
                 const text = [
                     "",
                     "",
-                    color + "CheerpX could not start" + normal,
+                    color + "CheerpX 启动失败" + normal,
                     "",
-                    "CheerpX uses SharedArrayBuffer, which is not available right now.",
+                    "CheerpX 依赖 SharedArrayBuffer 功能，但当前无法正常使用。",
                     "",
                     !isSecureContext && "  -  This page is not in a secure context. Serve over HTTPS or WSS.",
                     !isSecureContext && "    " + underline + "https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts" + noral,
                     isCustom && "  -  The document is not cross-origin isolated.",
                     isCustom && "     " + underline + "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements" + normal,
-                    "  - Your browser might not support SharedArrayBuffer.",
-                    "    Since 2022, all major browsers support this feature.",
+                    "  - 您的浏览器可能不支持 SharedArrayBuffer 功能。",
+                    "    自 2022 以来，主流浏览器皆支持此功能。",
                     "    " + underline + "https://caniuse.com/sharedarraybuffer" + normal,
                 ].filter(Boolean);
 
@@ -171,16 +140,16 @@ __      __   _  __   ____  __
                 const text = [
                     "",
                     "",
-                    color + "CheerpX could not start" + normal,
+                    color + "CheerpX 启动失败" + normal,
                     "",
-                    "CheerpX internal error message is:",
+                    "错误代码：",
                     error_message,
                     "",
                     "",
-                    "CheerpX is expected to work with recent desktop versions of Chrome, Edge, Firefox and Safari",
+                    "已知 CheerpX 支持 Chrome 、Edge 、Firefox 和 Safari 。",
                     "",
                     "",
-                    "Give it a try from a desktop version / another browser!",
+                    "请确保您使用桌面平台或尝试更换浏览器再试。",
                 ]
 
                 return text;
@@ -302,7 +271,7 @@ __      __   _  __   ____  __
             term.registerLinkMatcher(/https:\/\/leaningtech.com\/[a-z-]+/, function (mouseEvent, matchedString) {
                 window.open(matchedString, "_blank")
             });
-            console.log("Welcome. We appreciate curiosity, but be warned that keeping the DevTools open causes significant performance degradation and crashes.");
+            console.log("请注意：一旦启动开发工具后很可能会造成卡顿或崩溃。");
         }
         initialMessage();
         async function loadCX() {
