@@ -1,5 +1,8 @@
 # 可运行的指令
 
+help
+cat /home/pj568/runable.md
+
 ## 编辑器
 
 nano
