@@ -143,15 +143,12 @@
                     "debian-mod login: pj568",
                     "Password:",
                     "",
-                    "",
                     "+------------------------------------------+",
                     "|                                          |",
                     "|           PJ568 后端服务器终端           |",
                     "|                                          |",
                     "+------------------------------------------+",
-                    "",
                     "欢迎回来。运行以下指令以查看可执行指令：",
-                    "",
                     "  cat /home/pj568/runable.md",
                     "",
                     "连接中，请等待……",
@@ -159,7 +156,7 @@
                 return text;
             },
             getSharedArrayBufferMissingMessage: function () {
-                const isCustom = true;// window.location.hostname !== "webvm.io";
+                const isCustom = window.location.hostname !== "webvm.io";
                 const isSecureContext = window.isSecureContext;
                 const text = [
                     "",
@@ -170,7 +167,7 @@
                     "",
                     !isSecureContext && "  -  本次访问不安全。请使用 HTTPS 或 WSS 协议访问本页面。",
                     !isSecureContext && "    " + underline + "https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts" + normal,
-                    isCustom && "  -  The document is not cross-origin isolated.",
+                    isCustom && "  -  文档未实现跨域隔离。",
                     isCustom && "     " + underline + "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements" + normal,
                     "  - 您的浏览器可能不支持 SharedArrayBuffer 功能。",
                     "    自 2022 以来，主流浏览器皆支持此功能。",
