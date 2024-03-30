@@ -12,7 +12,7 @@ hexedit
 
 unzip
 tar
-7z
+7zr
 
 ## 生产环境
 
