@@ -19,6 +19,7 @@ RUN apt-get autoclean && apt-get autoclean
 
 # 初始化用户
 RUN useradd -m pj568 && echo "pj568:password" | chpasswd
+RUN echo 'export PATH=$PATH:/usr/games' >> /home/pj568/.bashec
 
 # 以用户名义复制配置文件
 COPY --chown=user:pj568 ./cp_to_home /home/pj568
