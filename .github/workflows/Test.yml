@@ -14,7 +14,7 @@ on:
         type: string
         description: '镜像大小，上限是 950M'
         required: true
-        default: '900M'
+        default: '896M'
 
       DEPLOY_TO_GITHUB_PAGES:
         type: boolean
