@@ -132,7 +132,6 @@
                     color + "|           PJ568 后端服务器终端           |" + normal,
                     color + "|                                          |" + normal,
                     color + "+------------------------------------------+" + normal,
-
                 ];
                 return title;
             },
@@ -142,15 +141,16 @@
                     "",
                     "debian-mod login: pj568",
                     "Password:",
-                    "",
                     "+------------------------------------------+",
                     "|                                          |",
                     "|           PJ568 后端服务器终端           |",
                     "|                                          |",
                     "+------------------------------------------+",
-                    "欢迎回来。运行以下指令以查看可执行指令：",
-                    "  cat /home/pj568/runable.md",
                     "",
+                    "欢迎回来。运行以下指令以查看可执行指令：",
+                    "  cat " + underline + "/home/pj568/runable.md" + normal,
+                    "",
+                    color + "等待加载完毕……" + normal,
                 ];
                 return text;
             },
@@ -164,6 +164,7 @@
                     "",
                     "CheerpX 依赖 SharedArrayBuffer 功能，但当前无法正常使用。",
                     "",
+                    "可能的原因：",
                     !isSecureContext && "  -  本次访问不安全。请使用 HTTPS 或 WSS 协议访问本页面。",
                     !isSecureContext && "    " + underline + "https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts" + normal,
                     isCustom && "  -  文档未实现跨域隔离。",
