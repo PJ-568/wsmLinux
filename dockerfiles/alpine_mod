@@ -1,0 +1,24 @@
+# 继承系统基本信息
+FROM --platform=i386 i386/alpine
+
+# 使用包管理器安装软件
+RUN apk add --no-cache useradd chpasswd
+# RUN apk add --no-cache ncurses gcc python3 \
+# 	nano unzip tar rustc cargo fakeroot \
+#     hexedit nodejs less file make dialog \
+#     curl wget p7zip git netcat-openbsd
+
+# 初始化用户
+RUN useradd -m pj568 && echo "pj568:password" | chpasswd
+
+# 以用户名义复制配置文件
+# COPY --chown=user:pj568 ./cp_to_home/.cargo /home/pj568/.cargo
+
+# [可选](可在终端设置) 设置工作目录
+WORKDIR /home/pj568/
+
+# [可选](可在终端设置) 设置环境变量
+ENV HOME="/home/pj568" TERM="xterm" USER="pj568" SHELL="/bin/ash" EDITOR="nano" LANG="zh_CN.UTF-8" LC_ALL="C"
+
+RUN echo 'root:password' | chpasswd
+CMD [ "/bin/ash" ]
