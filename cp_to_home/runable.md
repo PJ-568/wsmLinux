@@ -1,4 +1,4 @@
-# 可运行的指令
+# 部分可运行的指令
 
 help
 cat /home/pj568/runable.md
@@ -17,6 +17,8 @@ tar
 ## 生产环境
 
 git
+gcc
+make
 rustc
 cargo
 nodejs
@@ -30,4 +32,4 @@ netcat-openbsd
 
 ## 娱乐
 
-nethack-console
+nethack

@@ -2,29 +2,57 @@
 FROM --platform=i386 i386/debian:buster
 ARG DEBIAN_FRONTEND=noninteractive
 
+# 初始化用户
+RUN useradd -m pj568 && echo "pj568:password" | chpasswd
+
 # 使用包管理器安装软件
 RUN apt-get clean && apt-get update && apt-get -y upgrade
-RUN apt-get -y install apt-utils gcc \
-	python3 nano unzip tar rustc cargo  \
-	fakeroot dbus base whiptail hexedit \
-	nodejs patch ucf manpages less \
-	file make dialog curl wget p7zip \
-	git netcat-openbsd nethack-console
-RUN apt-get autoclean && apt-get autoclean
+RUN apt-get -y install --no-install-recommends \
+	bison ca-certificates flex apt-utils \
+	ncurses-dev ncompress gcc python3 nano unzip \
+	tar rustc cargo fakeroot dbus base whiptail \
+	hexedit nodejs patch ucf man manpages \
+	less file make dialog curl wget p7zip \
+	git netcat-openbsd
 
-# 手动安装部分软件
+# 安装 nethack
+# USER pj568
+COPY --chown=user:pj568 ./dockerfiles/docker.hints /usr/src/docker.hints
+RUN set -x && \
+	cd /usr/src && \
+	mkdir nethack && \
+	wget -O - https://www.nethack.org/download/3.6.7/nethack-367-src.tgz | \
+	tar zxv -C nethack --strip-components 1 && \
+	cd nethack && \
+	mv -i /usr/src/docker.hints . && \
+	sh sys/unix/setup.sh docker.hints && \
+	sed -i -e 's:\(#define SYSCF\>\):/* \1 */:' include/config.h && \
+	sed -i -e '/^MANDIR/s:=.*:= /usr/share/man/man6:' doc/Makefile && \
+	mkdir -p /usr/share/man/man6 && \
+	make all && \
+	make install && \
+	make manpages && \
+	cd /usr/src && rm -rf nethack
+COPY --chown=user:pj568 ./dockerfiles/nethack.sh /usr/games/nethack
+RUN chmod 755 -R /usr/games/nethack
+RUN chmod 755 -R /usr/games/lib/nethackdir
+RUN apt-get -y remove ncurses-dev ncompress
+# USER root
+
+# 手动安装 vtm
 # RUN wget https://github.com/directvt/vtm/releases/latest/download/vtm_linux_x86.zip && unzip vtm_linux_x86.zip && tar -xvf vtm_linux_x86.tar
 # RUN cp vtm /usr/bin/vtm
 # RUN rm vtm_linux_x86.zip vtm_linux_x86.tar
 
-# 初始化用户
-RUN useradd -m pj568 && echo "pj568:password" | chpasswd
-RUN echo 'export PATH=$PATH:/usr/games' >> /home/pj568/.bashec
+# 清理
+RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# nethack 环境变量
+ENV PATH       $PATH:/usr/games
+ENV HACKPAGER  /usr/bin/less
 
 # 以用户名义复制配置文件
 COPY --chown=user:pj568 ./cp_to_home /home/pj568
-# COPY --chown=user:pj568 ./examples /home/pj568/examples
-# RUN chmod -R +x  /home/pj568/examples/lua
 
 # [可选](可在终端设置) 设置工作目录
 WORKDIR /home/pj568/
