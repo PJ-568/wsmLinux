@@ -104,7 +104,7 @@
                         <div style="position: relative;">
                             <svg style="fill:#E0E0E0;width:1.5rem;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M256 64H384v64H256V64zM240 0c-26.5 0-48 21.5-48 48v96c0 26.5 21.5 48 48 48h48v32H32c-17.7 0-32 14.3-32 32s14.3 32 32 32h96v32H80c-26.5 0-48 21.5-48 48v96c0 26.5 21.5 48 48 48H240c26.5 0 48-21.5 48-48V368c0-26.5-21.5-48-48-48H192V288H448v32H400c-26.5 0-48 21.5-48 48v96c0 26.5 21.5 48 48 48H560c26.5 0 48-21.5 48-48V368c0-26.5-21.5-48-48-48H512V288h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H352V192h48c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48H240zM96 448V384H224v64H96zm320-64H544v64H416V384z"/></svg>
                             <span style="cursor: pointer" id="networkStatus">连接服务器至本地</span>
-                            <span style="cursor: pointer; position: absolute; right: 0; visibility: hidden;" id="ipCopied">已复制。</span>
+                            <span style="cursor: pointer; position: absolute; right: 0; visibility: hidden;" id="ipCopied">已复制</span>
                         </div>
                     </div>
                 </a>
@@ -118,7 +118,55 @@
         </div>
     </main>
     <script>
+        const networkStatusElement = document.getElementById('networkStatus');
+        const observer = new MutationObserver((mutationsList, observer) => {
+            // 遍历所有变动的 MutationRecord
+            for (const mutation of mutationsList) {
+                // 检查是否是子节点的内容发生了改变
+                if (mutation.type === 'childList' && mutation.target === networkStatusElement) {
+                    console.log('子项 内容为：' + mutation.target.textContent.trim())
+                    if (mutation.target.textContent.trim() === 'Downloading network code...') {
+                        mutation.target.textContent = '下载数据包……';
+                    }
+                    if (mutation.target.textContent.trim() === 'Tailscale Login') {
+                        mutation.target.textContent = '登录 Tailscale';
+                    }
+                    if (mutation.target.textContent.trim() === 'Starting login...') {
+                        mutation.target.textContent = '初始化登陆地址……';
+                    }
+                    if (mutation.target.textContent.trim() === 'Login URL ready...') {
+                        mutation.target.textContent = '登录地址已就绪';
+                        observer.disconnect()
+                    }
+                }
+            }
+        });
+        observer.observe(networkStatusElement, {
+            childList: true, // 观察子节点的变动
+            subtree: true // 观察所有后代节点的变动
+        });
 
+        const targetElement = document.getElementById('loginLink');
+        const title_observer = new MutationObserver(function(mutationsList) {
+            // 遍历每一个发生变化的属性
+            for(let mutation of mutationsList) {
+                // 判断属性是否为 title
+                if(mutation.attributeName === 'title') {
+                    const newTitle = mutation.target.getAttribute('title');
+                    console.log('title 内容为：' + newTitle)
+                    if(newTitle === "Connect to Tailscale") {
+                        mutation.target.setAttribute('title', "连接到 Tailscale");
+                    }
+                    if(newTitle === "Right click to copy") {
+                        mutation.target.setAttribute('title', "右键点击以复制");
+                        title_observer.disconnect()
+                    }
+                }
+            }
+        });
+        title_observer.observe(targetElement, { attributes: true });
+    </script>
+    <script>
         //Utility namespace to group all functionality related to printing (both error and non error) messages
         const color = "\x1b[1;35m";
         const bold = "\x1b[1;37m";
