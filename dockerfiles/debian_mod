@@ -35,7 +35,7 @@ RUN set -x && \
 	cd /usr/src && rm -rf nethack
 COPY --chown=user:pj568 ./dockerfiles/nethack.sh /usr/games/nethack
 RUN chmod 755 -R /usr/games/nethack
-RUN chmod 755 -R /usr/games/lib/nethackdir
+RUN chmod 755 /usr/games/lib/nethackdir/nethack
 RUN apt-get -y remove ncurses-dev ncompress
 # USER root
 
